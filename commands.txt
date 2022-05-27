@@ -1,0 +1,431 @@
+
+## From tech with tim series: https://www.youtube.com/watch?v=gQTrYcH0b7g&list=PLzMcBGfZo4-nUIIMsz040W_X-03QH5c5h&index=3
+
+
+
+less filename   # view 1 page of file, which you can cycle through. Similar to cat but shows less
+
+uptime # time system on
+
+wall message_to_other_logged_in_users   # messages all users logged in via SSH
+
+write username   # send message to specific logged in user
+
+who   # show all users logged in to system
+
+free   # shows memory available
+
+sort file.txt  # sort lines in a text file in ascending order
+
+shutdown -h now   # shut down machine now
+
+shutdown -h +10   # shut down in 10 mins
+
+shutdown -r now   # restart machine now
+
+man ls     # view params of ls (or any) command. Press q to escape
+
+tail file.txt    # shows buttom 10 lines of file
+
+tail -n 30 file.txt  # shows buttom 30 lines of file
+
+cd ../..    # go up 2 levels in folder
+
+clear       # clears contents of screen
+
+cat >> targetfile.txt   # lets you type and appends this to target file. ctrl+d to exit
+
+cat original_file.txt >> targetfile.txt   # append original_file to targetfile
+
+rm *.txt   # remove all txt files
+
+rm *.*     # remove all files
+
+find . -name filename.txt   # recursively find file filename.txt
+
+find . -name "*.txt"    # recursively find all txt files
+
+find . -name "*.txt" | wc -l  # returns count of all found txt files
+
+find . -iname "*.txt"    # recursively find all txt files without being case sensitive
+
+find . -type d -name "foldername*"   # find directories (specified by -type d) starting with text 'foldername'
+
+unlink filename    # deletes the file with no way to recover it
+
+
+
+
+
+
+#### users
+adduser username   # make new user
+
+cat /etc/passwd   # show info on users. Will show lots of system (non human) users
+
+logout           # logout. Can log in as a new user after this
+
+deluser username   # delete user and their home folder
+
+passwd username    # change user's password
+
+### group = collection of users with same permissions
+
+### primary group = user specific permissions; secondary groups = can be shared across users
+
+addgroup groupname   # make group
+
+usermod -a -G groupname username   # add user to group
+
+groups username    # view groups user can access
+
+gpasswd -d username groupname   # remove user from group
+
+del groupname     # delete group
+
+
+
+## All permissions (inc who can run what functions) are stored in a special file 'visudo', which you access with:
+visudo 
+
+
+
+
+
+
+## chmod and permissions
+which functionname    # tell us location of function source in system. Form: "which [functionname]"
+
+ls -l      # gives extra info on each obj:
+	# inc permissions in 9 chars, no of objs in each dir, user who owns file, group of file, size of file (in bits I think)
+	# 9 chars permissions are permissions for user, group and all users. In 'rwx' form
+
+# rwx = read, write and execute. Permissions allowed
+
+chmod [user][+,-,=][permission(s)] filename   # +,-,= add, remove or set permission for a given file
+
+chmod -R [user][+,-,=][permission(s)] filename   # as above for a directory, recursively adding permissions for all files inside dir
+
+# for [user] above use: u / a / o / g (current user; all users; all users & groups bar current user and current group; group)
+
+chmod a+w file.txt   # allow all users to write to file.txt
+
+chmod -R o-x folder   # remove execute permission for all files in folder for all other groups and users
+
+chmod a=wr file.txt  # allow all users to write and read file.txt
+
+
+
+
+### processes and htop
+top    # view processes
+htop   # similar to top but better
+
+apt install htop   # apt = package manager, similar to pip. Newer version of apt-get
+
+#when in htop:
+F3  # search for a process 
+F9  # kill a process. Select option 15 'SIGTERM' (superior to SIGKILL)
+
+killall [processname]  # kill all instances of a process
+
+kill [processID]
+
+ps      # shows current processes run by the root user
+
+ps a    # shows current processes run by ALL users
+
+ps au    # as above, showing owner of processes and other info
+
+ps aux   # view all system processes too
+
+
+
+
+
+## networking
+
+ifconfig   # list devices which are connected to your machine, and lots of network info for each
+
+ip -4 addr   # show ip4 address
+
+ip -6 addr   # show ip6 address
+
+netstat      # shows network info inc active ports, routing tables, a tonne of other things
+
+netstat -a   # view all listening ports
+
+netstat -at   # view all tcp connections only
+
+netstat -l    # view all active ports
+
+ping endpoint_url   # test if you get a response from site
+
+curl endpoint_url  # send a get request to that endpoint url
+
+curl -X POST target_url  # -X specifies the method, so could be DELETE or whatever, but we set it to POST in this case
+
+curl -X POST --data "p1=value1&p2=value2" target_url  # sends POST request with values for p1 and p2 specified
+
+curl -X POST -d p1=value1 -d p2=value2 target_url     # different way of writing the line above
+
+curl -X POST -o response.txt --data "p1=value1&p2=value2" target_url   # save response to 'response.txt', specifying filename with -o
+
+curl -I target_url      # -I tells it to only show you the returned header
+
+curl --help          # view other prefixes for curl
+
+
+# POST json by specifying the header ('Content-Type: application/json') with -H 
+curl -X POST https://reqbin.com/echo/post/json
+   -H 'Content-Type: application/json'
+   -d '{"login":"my_login","password":"my_password"}'
+
+
+
+
+
+
+
+
+### Keys
+ls ~/.ssh/id_rsa*    # list existing rsa keys
+
+ssh-keygen -b 4096   # create public and private keys in ~/.ssh/ file. By default will overwrite existing file, though have option
+					 # to give new ones different names
+
+# can use the same key file for multiple servers
+
+ssh-copy-id root@[target machine IP address]  # copy public key to your linux machine. Lets you log in to VM without password from mac CLI
+
+ssh root@[target machine IP address]      # to SSH to VM from mac after running line above
+
+# after getting keys for VM, can disable login via password, so the only method of access is the keys, which is more secure
+
+# Can use FileZilla to transfer files between local machine and VM easily
+
+
+
+
+
+
+
+
+### Environment variables
+
+env              # List environment variables
+
+$env_variable    # runs whatever the name of the env_variable is as code (ie, if its a script, it will run the script)
+
+export VAR=test   # makes temp environment variable which only lasts as long as current session
+
+cd                # Go to users home directory
+
+nano .bashrc     # file you can store persistent env variables in for that user. Have to cd into user's home directory first
+
+source .bashrc    # updates env variables based on changes to .bashrc (need to run this to implement changes made on line above)
+
+nano /etc/environment     # to make variables gloablly (for all users) edit or create environment file in etc folder (think one will be there already)
+source /etc/environment
+
+
+unset VAR       # delete env variable
+
+
+
+
+
+
+
+#### Text editors
+
+# ctrl+g    in nano, shows all shortcuts
+
+# Says if you know VIM you can be productive with just a keyboard
+
+# Emacs is a text editor: alternative to VIM and nano
+
+
+
+
+
+
+
+
+### Grep and regex
+
+grep regex_pattern filename     # returns all lines in a file which meet the regex_pattern 
+
+
+
+
+
+
+## Shell scripts
+
+!#/bin/bash     # run in bash version of shell
+
+# Comment in shell script
+
+# Anything you can write in CLI you can put in shell script
+
+./shellscript.sh     # to run shell script
+
+chmod +x shellscript.sh    # add execute permission to shellscript.sh
+
+
+# define and call function (can do this in CLI too)
+print() {
+	echo "Called function"
+}
+print    # note lack of brackets when calling function
+
+
+# function args use $1, $2, etc by position
+print() {
+	echo "Called function with params $1 $2"
+}
+print adam genius   # call func setting 2 params
+
+
+x=2
+echo $x
+
+exit 0    # ends script
+exit 1    # ends script; signifies failure
+
+
+
+
+
+
+
+
+### Cronjobs
+
+# crontab = manager of cron jobs. Each user has their own crontab
+
+crontab -e    # edit crontab
+
+crontab -l    # view crontab 
+
+* * * * * ls    # run ls command every minute
+
+*/15 * * * * ls     # run ls every 15 minutes
+
+15 * * * * ls      # run ls 15 minutes past every hour
+
+15, 30, 45 * * * * ls    # run ls 15, 30 and 45 mins past every hour
+
+0 */4 * * * ls       # run ls every 4 hours, at the 0'th minute of the given hour
+
+@daily ls       # run ls at midnight every day
+
+@reboot ls      # run ls on boot of machine
+
+@weekly ls
+
+@annually ls
+
+@hourly ls
+
+@monthly ls
+
+@monthly ./root/script_to_execute.sh     # call script. Shell script paths need './' prefix when being called
+
+@hourly python3 root/script_to_execute.py  # include path to python script
+
+
+
+
+
+
+
+#### Deploying a flask server. Code for this from https://github.com/techwithtim/Flask-App-Hosted-On-VPS/blob/024fdb9b5543075b1da3fe1332d05009b91b72a4/README.md
+
+nano __init__.py    # main file for flask app is called __init__.py. Makes it easier for gunicorn to find it I think
+
+# to make nginx config file 
+sudo nano /etc/nginx/sites-enabled/<directory-name-of-flask-app>
+
+# then put this in the nginx config file (this redirects queries to the public server ip to the specified 127.0.0.1:8000):
+server {
+    listen 80;
+    server_name <public-server-ip>;
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+
+# Unlink the default config file and reload nginx to use the newly created config file.
+sudo unlink /etc/nginx/sites-enabled/default
+sudo nginx -s reload
+
+
+# gunicorn lets your python server run on 3 workers. Says rule of thumb for no. of workers is (2 * no. of cores) + 1
+gunicorn -w 3 flask_project_folder:app
+
+
+
+
+# by default, when you close an SSH window the processes will stop running
+
+# to make process continue after SSH window is closed, preface command with 'screen':
+screen gunicorn -w 3 flask_project_folder:app
+
+
+
+
+
+
+
+
+
+## start typing a folder name and press Tab to autocomplete, eg:
+cd Dow(Tab) -> cd Downloads
+
+
+
+
+
+### Folders in top level of directory
+bin = containers user executable files
+boot = stuff that runs on boot
+dev = stores things that run on hardware devices connected to the machine
+etc = local system integration files
+home = folder for non-root users (there would be a subfolder for each user in here)
+media = external media devices
+mnt = mounted things
+opt = optional files
+root = files for root user
+tmp = temp files. Anything in here can be deleted without notice
+usr = shareable files (I think by all users)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
