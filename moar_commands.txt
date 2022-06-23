@@ -1,0 +1,87 @@
+
+
+## tmux
+
+Way of running multiple screens or processes in one terminal
+
+>tmux new -s screen1
+
+To create a new window in the current session, press Ctrl+B, and then C.
+
+
+To hop between windows, press Ctrl+B, and then one of the followings keys:
+-N: Display the next window.
+-P: Display the previous window.
+-0 to 9: Display a window numbered 0 to 9.
+
+More on tmux: https://www.howtogeek.com/671422/how-to-use-tmux-on-linux-and-why-its-better-than-screen/
+
+Can detach and attach sessions. Detached sessions keep running in background
+
+If you press Ctrl+B, and then double quotation marks (“”), you split the window horizontally into two panes. Can do this more to get lots of CLI terminals for the same machine on one screen
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
